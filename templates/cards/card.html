@@ -1,0 +1,48 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_tags %}
+
+{% block title %}
+Карточка
+{% endblock title %}
+
+{% block content %}
+<h1>Карточка</h1>
+
+{% if Card.image %}
+    <img src="{{Card.image.url}}" alt="">
+{% endif %}
+<h4>{{ Card.front_text }}</h4>
+<style>
+.hidden-text {
+  display: none;
+}
+</style>
+<body>
+
+<div>
+  <button onclick="toggleText()" style="display: inline-block; padding: 6px 12px; background-color: #B22222;
+                                       color: white; border: none; cursor: pointer;">Показать ответ</button>
+  <div id="hiddenText" class="hidden-text">
+    <h4>{{ Card.back_text }}</h4>
+  </div>
+  <a href="http://127.0.0.1:8000/card/{% get_deck_cards Card.deck.id Card.id %}">
+     <button style="display: inline-block; padding: 6px 12px; background-color: #007bff;
+                                       color: white; border: none; cursor: pointer;">Следующая карточка</button>
+  </a>
+</div>
+
+<script>
+function toggleText() {
+  var hiddenText = document.getElementById("hiddenText");
+  if (hiddenText.style.display === "none") {
+    hiddenText.style.display = "block";
+  } else {
+    hiddenText.style.display = "none";
+  }
+}
+</script>
+
+</body>
+</html>
+{% endblock content %}

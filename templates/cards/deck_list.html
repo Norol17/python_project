@@ -1,0 +1,47 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Колоды
+{% endblock title %}
+
+{% block content %}
+    <h1>Все колоды</h1>
+    <h3>Колод на странице: {{ Decks|length }}</h3>
+    <hr>
+    {% if Decks %}
+        <!-- Для каждого объявления будет генерироваться новая строчка -->
+        {% for deck in Decks %}
+            <h1>______________________________________________________</h1>
+            <!-- Здесь можно получать доступ к полям объекта модели. -->
+            <h5>{{ deck.name }}</h5>
+            <br>Владелец колоды- {{ deck.user }}
+            <h1>______________________________________________________</h1>
+        {% endfor %}
+        <br>
+    {% else %}
+        <h2>Колод пока нет!</h2>
+    {% endif %}
+
+<!-- Добавляем пагинацию на страницу-->
+    {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+        {% endif %}
+
+<!--{# Информация о текущей странице #}-->
+    {{ page_obj.number }}
+
+<!--{# Информация о следующих страницах #}-->
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}

@@ -1,0 +1,45 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+Карточки
+{% endblock title %}
+
+{% block content %}
+    <h1>Все карточки</h1>
+    <h3>Карточек на странице: {{ Cards|length }}</h3>
+    <hr>
+    {% if Cards %}
+        <!-- Для каждого объявления будет генерироваться новая строчка -->
+        {% for card in Cards %}
+            <h1>______________________________________________________</h1>
+            <!-- Здесь можно получать доступ к полям объекта модели. -->
+            <h5><a href="{% url 'card' card.id %}">{{ card.front_text }}</a></h5>
+            <br>Колода - {{ card.deck }}
+            <h1>______________________________________________________</h1>
+<!--            {{ a_ads.content|truncatewords:20|safe }}-->
+        {% endfor %}
+        <br>
+    {% else %}
+        <h2>Карточек пока нет!</h2>
+    {% endif %}
+
+    {# Информация о предыдущих страницах #}
+   {% if page_obj.has_previous %}
+        <a href="?page=1">1</a>
+        {% if page_obj.previous_page_number != 1 %}
+            ...
+            <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+            {% endif %}
+        {% endif %}
+
+    {{ page_obj.number }}
+
+   {% if page_obj.has_next %}
+       <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+       {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+       {% endif %}
+   {% endif %}
+
+{% endblock content %}
